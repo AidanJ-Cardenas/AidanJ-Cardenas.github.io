@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MANIFEST | AJ</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <nav><div class="logo">AJ</div><div class="nav-links"><a href="index.html">Vault</a></div></nav>
+    <div class="vault-container">
+        <div class="formula-card" style="display:block; max-width:700px;">
+            <h2 style="margin-bottom:30px; color:var(--gold);">Selection Manifest</h2>
+            <div id="item-list"></div>
+            <div id="summary" style="margin-top:40px; border-top:1px solid #222; padding-top:20px; text-align:right;">
+                <h2 id="total-price" style="margin-bottom:20px;">$0.00</h2>
+                <button class="btn-claim" onclick="processOrder()">Initialize Transaction</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="cart.js"></script>
+    <script>
+        const stripe = Stripe('pk_live_51TGSuNRxa3KWGE32yRh5RlOoet2XIR6qzpUyzuBLCnNpwQn35I3hT77homiQExc4Gga4d5H3GUtHTBfHvwPbu6JO00a0ewR3ha');
+
+        // Note: Replace these 'prod_' IDs with 'price_' IDs from your Stripe Dashboard
+        const stripeMap = {
+            "JOSUE": "price_...", 
+            "LUMBERJACK": "price_...",
+            "MORNING MIST": "price_...",
+            "SPRING SOLSTICE": "price_...",
+            "SUMMER WHISP": "price_...",
+            "BUTTERFLY'S SUNSET": "price_...",
+            "PETAL & PINE": "price_...",
+            "DROPS OF DEW": "price_...",
+            "FAIRY'S CABIN": "price_...",
+            "CASHMERE WOODS": "price_..."
+        };
+
+        function render() {
+            const list = document.getElementById('item-list');
+            let total = 0;
+            list.innerHTML = '';
+            for (let name in bag) {
+                let item = bag[name];
+                total += (item.price * item.qty);
+                list.innerHTML += `<div style="display:flex; justify-content:space-between; padding:15px 0;">
+                    <span>${name} (x${item.qty})</span>
+                    <span>$${item.price * item.qty}</span>
+                </div>`;
+            }
+            document.getElementById('total-price').innerText = `$${total.toFixed(2)}`;
+        }
+
+        async function processOrder() {
+            // Prepare items for the backend function
+            const lineItems = Object.keys(bag).map(name => ({
+                price: stripeMap[name],
+                quantity: bag[name].qty
+            }));
+
+            try {
+                // Call your Netlify serverless function
+                const response = await fetch('/.netlify/functions/create-checkout', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ items: lineItems })
+                });
+
+                const session = await response.json();
+                
+                if (session.url) {
+                    // Redirect the user to the secure Stripe-hosted page
+                    window.location.href = session.url;
+                } else {
+                    alert("Unable to initialize checkout. Please check your IDs.");
+                }
+            } catch (err) {
+                console.error("Checkout Error:", err);
+                alert("Critical Connection Error.");
+            }
+        }
+        render();
+    </script>
+</body>
+</html>

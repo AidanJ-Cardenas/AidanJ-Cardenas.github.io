@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aidan J. Cardenas | Contact</title>
+    <link rel="stylesheet" href="https://use.typekit.net/wsq7zri.css">
+    <link rel="stylesheet" href="contact.css">
+</head>
+<body>
+    <div id="cursor-glow"></div>
+    <canvas id="canvas-bg"></canvas>
+
+    <nav class="navbar">
+        <img src="portfolio/logo/secondary/silverNP.png" alt="Logo" class="logo">
+        <div class="nav-links">
+            <a href="home.html"><figure><img src="portfolio/logo/icons/home/home silver.svg" alt="home"><figcaption>HOME</figcaption></figure></a>
+            <a href="about.html"><figure><img src="portfolio/logo/icons/user/user silver.svg" alt="about"><figcaption>ABOUT ME</figcaption></figure></a>
+            <a href="contact.html"><figure><img src="portfolio/logo/icons/contact/contact silver.svg" alt="contact"><figcaption>CONTACT</figcaption></figure></a>
+        </div>
+    </nav>
+    
+    <main class="forms-wrapper">
+        <form id="contactForm" action="https://api.web3forms.com/submit" method="POST">
+            <div id="loader-container"><div id="loader-bar"></div></div>
+            <input type="hidden" name="access_key" value="9b3e7833-d850-4aa3-a2af-b52cd726b47a">
+            
+            <div class="form-header">
+                <h2>SEND MESSAGE</h2>
+                <div class="status-indicator">
+                    <span class="dot"></span>
+                    <span class="status-text">SYSTEM ACTIVE</span>
+                </div>
+            </div>
+
+            <div id="form-content">
+                <div class="input-group"><label>Full Name</label><input type="text" name="name" placeholder="IDENTIFY SENDER" required></div>
+                <div class="input-group"><label>Email Address</label><input type="email" name="email" placeholder="ROUTING ADDRESS" required></div>
+                <div class="input-group"><label>Message Data</label><textarea name="message" rows="5" placeholder="ENTER TRANSMISSION..." required></textarea></div>
+                <button type="submit" id="submitBtn">Initialize Upload</button>
+            </div>
+
+            <div id="success-message" style="display: none;">
+                <h2 class="glitch" data-text="TRANSMISSION COMPLETE">TRANSMISSION COMPLETE</h2>
+                <p class="success-subtext">Data successfully routed to AJC.</p>
+                <button type="button" class="reload-btn" onclick="location.reload()">NEW SESSION</button>
+            </div>
+        </form>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-brandmark"><img src="portfolio/logo/icons/brandmark/silver.png" alt="AJC"></div>
+        <p class="copyright">© 2026 AIDAN J. CARDENAS</p>
+        <div class="footer-links">
+            <a href="mailto:aidan.j.cardenas@outlook.com">EMAIL</a>
+            <a href="https://www.instagram.com/aidanj._cardenas/" target="_blank">INSTAGRAM</a>
+        </div>
+    </footer>
+
+    <script src="background.js"></script>
+    <script>
+        const form = document.getElementById('contactForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const loaderBar = document.getElementById('loader-bar');
+        const formContent = document.getElementById('form-content');
+        const successMessage = document.getElementById('success-message');
+        const statusDot = document.querySelector('.dot');
+        const statusText = document.querySelector('.status-text');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            submitBtn.innerText = "UPLOADING...";
+            submitBtn.disabled = true;
+            loaderBar.style.width = "100%"; 
+
+            const formData = new FormData(form);
+            const object = Object.fromEntries(formData);
+            const json = JSON.stringify(object);
+
+            fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: json
+            })
+            .then(async (response) => {
+                if (response.status == 200) {
+                    // Trigger Cinematic Background Change
+                    if (window.explodeAndStayRed) window.explodeAndStayRed(); 
+                    
+                    // UI Transitions
+                    formContent.style.opacity = "0";
+                    statusDot.style.animation = "none";
+                    statusDot.style.background = "#fc2f38"; 
+                    statusDot.style.boxShadow = "0 0 10px #fc2f38";
+                    statusText.innerText = "OFFLINE / SENT";
+
+                    setTimeout(() => {
+                        formContent.style.display = "none";
+                        successMessage.style.display = "block";
+                    }, 600);
+                } else {
+                    submitBtn.innerText = "UPLOAD FAILED";
+                    submitBtn.disabled = false;
+                }
+            })
+            .catch(error => {
+                submitBtn.innerText = "CONNECTION ERROR";
+                submitBtn.disabled = false;
+            });
+        });
+    </script>
+</body>
+</html>

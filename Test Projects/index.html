@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AJ | THE VAULT</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@200;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <div class="logo">AJ</div>
+        <div class="nav-links">
+            <a href="about.html">Creed</a>
+            <a href="checkout.html">Manifest (<span id="bag-count">0</span>)</a>
+        </div>
+    </nav>
+
+    <div style="text-align: center; padding: 160px 0 40px 0;">
+        <span class="batch-number">CARDENAS COLLECTIVE</span>
+        <h1 style="font-size: 3rem;">Signature Series</h1>
+    </div>
+
+    <section style="display: flex; flex-direction: column; align-items: center; gap: 10px; padding-bottom: 100px;">
+        <script>
+            const formulas = [
+                { id: "01", name: "Josue", file: "josue.html" },
+                { id: "02", name: "Lumberjack", file: "lumberjack.html" },
+                { id: "03", name: "Morning Mist", file: "morning-mist.html" },
+                { id: "04", name: "Spring Solstice", file: "spring-solstice.html" },
+                { id: "05", name: "Summer Whisp", file: "summer-whisp.html" },
+                { id: "06", name: "Butterfly's Sunset", file: "butterfly-sunset.html" },
+                { id: "07", name: "Petal & Pine", file: "petal-pine.html" },
+                { id: "08", name: "Drops of Dew", file: "drops-of-dew.html" },
+                { id: "09", name: "Fairy's Cabin", file: "fairys-cabin.html" },
+                { id: "10", name: "Cashmere Woods", file: "cashmere-woods.html" }
+            ];
+
+            formulas.forEach(f => {
+                document.write(`
+                    <a href="${f.file}" style="text-decoration:none; width:100%; max-width:600px; display:flex; padding:20px; border:1px solid #111; transition:0.3s;" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='#111'">
+                        <span style="font-family:'Cinzel'; color:var(--gold); margin-right:30px; opacity:0.5;">${f.id}</span>
+                        <span style="font-family:'Cinzel'; color:#fff; letter-spacing:3px;">${f.name}</span>
+                    </a>
+                `);
+            });
+        </script>
+    </section>
+    <script src="cart.js"></script>
+</body>
+</html>

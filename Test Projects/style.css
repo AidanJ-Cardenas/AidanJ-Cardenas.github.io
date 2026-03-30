@@ -1,0 +1,49 @@
+:root {
+    --gold: #d4af37;
+    --bg: #050505;
+    --panel: rgba(20, 20, 20, 0.9);
+    --border: rgba(212, 175, 55, 0.3);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; cursor: crosshair; }
+
+body {
+    background-color: var(--bg);
+    color: #e0e0e0;
+    font-family: 'Montserrat', sans-serif;
+    background-image: radial-gradient(circle at 20% 30%, #1a1a1a 0%, transparent 40%);
+    line-height: 1.6;
+}
+
+h1, h2, h4, .logo { font-family: 'Cinzel', serif; letter-spacing: 4px; text-transform: uppercase; }
+
+nav {
+    position: fixed; top: 0; width: 100%; z-index: 1000;
+    padding: 1.5rem 5%; display: flex; justify-content: space-between; align-items: center;
+    backdrop-filter: blur(15px); border-bottom: 1px solid var(--border);
+}
+
+.nav-links a { color: #fff; text-decoration: none; font-size: 0.7rem; letter-spacing: 2px; margin-left: 30px; opacity: 0.6; transition: 0.5s; }
+.nav-links a:hover { opacity: 1; color: var(--gold); }
+
+.vault-container { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 120px 5%; }
+
+.formula-card {
+    background: var(--panel); border: 1px solid var(--border); padding: 40px;
+    display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; width: 100%; max-width: 1000px;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+}
+
+.batch-number { font-size: 0.6rem; color: var(--gold); margin-bottom: 10px; display: block; letter-spacing: 5px; }
+
+.ritual-box { margin-top: 25px; border-top: 1px solid #222; padding-top: 20px; }
+
+.safety-alert { font-size: 0.7rem; color: #888; border-left: 2px solid var(--gold); padding-left: 15px; margin-top: 20px; font-style: italic; }
+
+.btn-claim {
+    background: transparent; border: 1px solid var(--gold); color: var(--gold);
+    padding: 15px 30px; font-family: 'Cinzel'; letter-spacing: 3px; transition: 0.5s; 
+    text-decoration: none; display: inline-block; cursor: pointer; text-align: center;
+}
+
+.btn-claim:hover { background: var(--gold); color: #000; box-shadow: 0 0 20px rgba(212, 175, 55, 0.2); }
