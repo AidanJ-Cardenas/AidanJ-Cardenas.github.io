@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>01 | Josue</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body>
+    <nav>
+        <div class="logo"><a href="index.html" style="color:#fff; text-decoration:none;">AJ</a></div>
+        <div class="nav-links"><a href="index.html" style="text-decoration:none; color:#fff; font-size:0.7rem; opacity:0.6;">THE VAULT</a></div>
+    </nav>
+
+    <div class="vault-container">
+        <div class="formula-card reveal">
+            <span class="batch-number">SERIAL: CC-001-PLATINUM</span>
+            <h1 style="color:#e5e4e2; font-size: 3rem;">Josue</h1>
+            <span class="price-tag">$15.00</span>
+            
+            <p style="font-weight:200; line-height:2; opacity:0.8;">
+                Industrial. Sharp Eucalyptus and structural Cedarwood anchor. Engineered for precision.
+            </p>
+            
+            <div class="safety-alert">
+                <strong>WARNING:</strong> Phototoxic (Bergamot). Avoid direct sunlight.
+            </div>
+
+            <div style="margin-top: 20px;">
+                <script async src="https://js.stripe.com/v3/buy-button.js"></script>
+                <stripe-buy-button
+                    buy-button-id="buy_btn_1TGqppRxa3KWGE32yWp4lRFu"
+                    publishable-key="pk_live_51TGSuNRxa3KWGE32yRh5RlOoet2XIR6qzpUyzuBLCnNpwQn35I3hT77homiQExc4Gga4d5H3GUtHTBfHvwPbu6JO00a0ewR3ha">
+                </stripe-buy-button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        gsap.from(".formula-card", { 
+            opacity: 0, 
+            y: 50, 
+            duration: 1.5, 
+            ease: "expo.out" 
+        });
+    </script>
+</body>
+</html>

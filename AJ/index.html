@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AJ | THE VAULT</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@200;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body>
+    <nav>
+        <div class="logo"><a href="index.html">AJ</a></div>
+        <div class="nav-links">
+            <a href="about.html" style="text-decoration:none; color:#fff; font-size:0.7rem; letter-spacing:2px; opacity:0.6;">THE CREED</a>
+        </div>
+    </nav>
+
+    <header style="height: 60vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+        <span class="batch-number reveal">CARDENAS COLLECTIVE</span>
+        <h1 class="reveal" style="font-size: 3.5rem; margin-top: 10px;">Signature Series</h1>
+        <div class="reveal" style="width: 1px; height: 80px; background: var(--gold); margin-top: 40px;"></div>
+    </header>
+
+    <section id="formula-list" style="display: flex; flex-direction: column; align-items: center; padding-bottom: 200px;">
+        </section>
+
+    <script>
+        const formulas = [
+            { id: "01", name: "Josue", file: "josue.html" },
+            { id: "02", name: "Lumberjack", file: "lumberjack.html" },
+            { id: "03", name: "Morning Mist", file: "morning-mist.html" },
+            { id: "04", name: "Spring Solstice", file: "spring-solstice.html" },
+            { id: "05", name: "Summer Whisp", file: "summer-whisp.html" },
+            { id: "06", name: "Butterfly's Sunset", file: "butterfly-sunset.html" },
+            { id: "07", name: "Petal & Pine", file: "petal-pine.html" },
+            { id: "08", name: "Drops of Dew", file: "drops-of-dew.html" },
+            { id: "09", name: "Fairy's Cabin", file: "fairys-cabin.html" },
+            { id: "10", name: "Cashmere Woods", file: "cashmere-woods.html" }
+        ];
+
+        const list = document.getElementById('formula-list');
+        formulas.forEach(f => {
+            list.innerHTML += `
+                <a href="${f.file}" class="formula-link reveal">
+                    <span class="formula-id">${f.id}</span>
+                    <span class="formula-name">${f.name}</span>
+                    <span class="formula-price">$15</span>
+                </a>
+            `;
+        });
+
+        // GSAP Reveal Animation
+        gsap.to(".reveal", {
+            opacity: 1, 
+            y: 0, 
+            duration: 1.2, 
+            stagger: 0.15, 
+            ease: "power4.out"
+        });
+    </script>
+</body>
+</html>

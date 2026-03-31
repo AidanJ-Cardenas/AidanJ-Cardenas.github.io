@@ -1,0 +1,81 @@
+<link rel="stylesheet" href="https://use.typekit.net/wsq7zri.css">
+
+Aileron Thin
+font-family: "aileron", sans-serif;
+font-weight: 100;
+font-style: normal;
+
+Aileron Thin Italic
+font-family: "aileron", sans-serif;
+font-weight: 100;
+font-style: italic;
+
+Aileron UltraLight
+font-family: "aileron", sans-serif;
+font-weight: 200;
+font-style: normal;
+
+Aileron UltraLight Italic
+font-family: "aileron", sans-serif;
+font-weight: 200;
+font-style: italic;
+
+Aileron Light
+font-family: "aileron", sans-serif;
+font-weight: 300;
+font-style: normal;
+
+Aileron Light Italic
+font-family: "aileron", sans-serif;
+font-weight: 300;
+font-style: italic;
+
+Aileron Regular
+font-family: "aileron", sans-serif;
+font-weight: 400;
+font-style: normal;
+
+Aileron Italic
+font-family: "aileron", sans-serif;
+font-weight: 400;
+font-style: italic;
+
+Aileron SemiBold
+font-family: "aileron", sans-serif;
+font-weight: 600;
+font-style: normal;
+
+Aileron SemiBold Italic
+font-family: "aileron", sans-serif;
+font-weight: 600;
+font-style: italic;
+
+Aileron Bold
+font-family: "aileron", sans-serif;
+font-weight: 700;
+font-style: normal;
+
+Aileron Bold Italic
+font-family: "aileron", sans-serif;
+font-weight: 700;
+font-style: italic;
+
+Aileron Black
+font-family: "aileron", sans-serif;
+font-weight: 800;
+font-style: normal;
+
+Aileron Black Italic
+font-family: "aileron", sans-serif;
+font-weight: 800;
+font-style: italic;
+
+Aileron Heavy
+font-family: "aileron", sans-serif;
+font-weight: 900;
+font-style: normal;
+
+Aileron Heavy Italic
+font-family: "aileron", sans-serif;
+font-weight: 900;
+font-style: italic;

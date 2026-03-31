@@ -1,0 +1,59 @@
+:root {
+    --gold: #d4af37;
+    --bg: #050505;
+    --panel: rgba(15, 15, 15, 0.85);
+    --border: rgba(212, 175, 55, 0.2);
+    --text-muted: rgba(255, 255, 255, 0.5);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; cursor: crosshair; }
+
+body {
+    background-color: var(--bg);
+    color: #e0e0e0;
+    font-family: 'Montserrat', sans-serif;
+    overflow-x: hidden;
+    background: radial-gradient(circle at 50% 50%, #111 0%, #050505 100%);
+}
+
+/* Typography */
+h1, h2, h4, .logo { font-family: 'Cinzel', serif; letter-spacing: 6px; text-transform: uppercase; }
+
+/* Navigation */
+nav {
+    position: fixed; top: 0; width: 100%; z-index: 1000;
+    padding: 2rem 5%; display: flex; justify-content: space-between;
+    backdrop-filter: blur(20px); border-bottom: 1px solid var(--border);
+}
+
+.logo a { font-size: 1.5rem; color: #fff; text-decoration: none; font-weight: 700; }
+
+/* Formula List Animation Classes */
+.reveal { opacity: 0; transform: translateY(30px); }
+
+.formula-link {
+    text-decoration: none; width: 100%; max-width: 800px;
+    display: flex; align-items: center; padding: 35px;
+    border-bottom: 1px solid #111; position: relative;
+    transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.formula-link:hover { border-bottom-color: var(--gold); padding-left: 55px; background: rgba(212, 175, 55, 0.03); }
+
+.formula-id { font-family: 'Cinzel'; color: var(--gold); font-size: 0.8rem; margin-right: 40px; opacity: 0.4; }
+.formula-name { font-family: 'Cinzel'; color: #fff; font-size: 1.6rem; letter-spacing: 4px; transition: 0.5s; }
+.formula-price { margin-left: auto; color: var(--gold); font-family: 'Montserrat'; font-weight: 200; letter-spacing: 2px; }
+
+.formula-link:hover .formula-name { letter-spacing: 8px; color: var(--gold); }
+
+/* Formula Card Overhaul */
+.vault-container { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 120px 5%; }
+
+.formula-card {
+    background: var(--panel); border: 1px solid var(--border); padding: 60px;
+    display: flex; flex-direction: column; gap: 25px;
+    max-width: 700px; backdrop-filter: blur(15px);
+    box-shadow: 0 50px 100px rgba(0,0,0,0.9);
+}
+
+.price-tag { font-family: 'Cinzel'; color: var(--gold); font-size: 1.5rem; margin-top: 10px; display: block; }
