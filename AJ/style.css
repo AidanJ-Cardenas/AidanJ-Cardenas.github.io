@@ -1,9 +1,9 @@
 :root {
     --gold: #d4af37;
     --bg: #050505;
-    --panel: rgba(15, 15, 15, 0.85);
-    --border: rgba(212, 175, 55, 0.2);
-    --text-muted: rgba(255, 255, 255, 0.5);
+    --panel: rgba(20, 20, 20, 0.7);
+    --border: rgba(212, 175, 55, 0.15);
+    --text-dim: rgba(255, 255, 255, 0.6);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; cursor: crosshair; }
@@ -13,47 +13,58 @@ body {
     color: #e0e0e0;
     font-family: 'Montserrat', sans-serif;
     overflow-x: hidden;
-    background: radial-gradient(circle at 50% 50%, #111 0%, #050505 100%);
+    background: radial-gradient(circle at 50% 50%, #151515 0%, #050505 100%);
 }
 
-/* Typography */
-h1, h2, h4, .logo { font-family: 'Cinzel', serif; letter-spacing: 6px; text-transform: uppercase; }
+h1, h4, .logo { font-family: 'Cinzel', serif; letter-spacing: 4px; text-transform: uppercase; }
 
 /* Navigation */
 nav {
     position: fixed; top: 0; width: 100%; z-index: 1000;
-    padding: 2rem 5%; display: flex; justify-content: space-between;
-    backdrop-filter: blur(20px); border-bottom: 1px solid var(--border);
+    padding: 1.5rem 5%; display: flex; justify-content: space-between;
+    backdrop-filter: blur(30px); border-bottom: 1px solid var(--border);
 }
+.logo a { font-size: 1.2rem; color: #fff; text-decoration: none; font-weight: 700; letter-spacing: 10px; }
+.nav-links a { text-decoration: none; color: var(--text-dim); font-size: 0.65rem; transition: 0.3s; }
+.nav-links a:hover { color: var(--gold); letter-spacing: 2px; }
 
-.logo a { font-size: 1.5rem; color: #fff; text-decoration: none; font-weight: 700; }
+/* Master Header */
+.vault-header { height: 60vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+.main-title { font-size: 4rem; margin: 15px 0; background: linear-gradient(to bottom, #fff, var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.gold-line { width: 1px; height: 100px; background: linear-gradient(to bottom, var(--gold), transparent); }
 
-/* Formula List Animation Classes */
-.reveal { opacity: 0; transform: translateY(30px); }
+/* Animation Classes */
+.reveal-up { opacity: 0; transform: translateY(50px); }
+.reveal-item { opacity: 0; transform: translateX(-30px); }
 
+/* Formula Links (Index) */
+.list-section { display: flex; flex-direction: column; align-items: center; padding-bottom: 150px; width: 100%; }
 .formula-link {
-    text-decoration: none; width: 100%; max-width: 800px;
-    display: flex; align-items: center; padding: 35px;
-    border-bottom: 1px solid #111; position: relative;
-    transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    text-decoration: none; width: 100%; max-width: 900px;
+    display: flex; align-items: center; padding: 40px;
+    border-bottom: 1px solid rgba(255,255,255,0.03); transition: 0.6s cubic-bezier(0.2, 1, 0.2, 1);
 }
+.formula-link:hover { padding-left: 60px; background: rgba(212, 175, 55, 0.05); }
+.formula-id { font-family: 'Cinzel'; color: var(--gold); font-size: 0.7rem; margin-right: 50px; opacity: 0.3; }
+.formula-name { font-family: 'Cinzel'; color: #fff; font-size: 1.8rem; letter-spacing: 6px; }
+.formula-price { margin-left: auto; color: var(--gold); font-weight: 200; font-size: 1.2rem; }
 
-.formula-link:hover { border-bottom-color: var(--gold); padding-left: 55px; background: rgba(212, 175, 55, 0.03); }
-
-.formula-id { font-family: 'Cinzel'; color: var(--gold); font-size: 0.8rem; margin-right: 40px; opacity: 0.4; }
-.formula-name { font-family: 'Cinzel'; color: #fff; font-size: 1.6rem; letter-spacing: 4px; transition: 0.5s; }
-.formula-price { margin-left: auto; color: var(--gold); font-family: 'Montserrat'; font-weight: 200; letter-spacing: 2px; }
-
-.formula-link:hover .formula-name { letter-spacing: 8px; color: var(--gold); }
-
-/* Formula Card Overhaul */
-.vault-container { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 120px 5%; }
-
+/* Product Card (Formulas) */
+.vault-container { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 100px 5%; }
 .formula-card {
-    background: var(--panel); border: 1px solid var(--border); padding: 60px;
-    display: flex; flex-direction: column; gap: 25px;
-    max-width: 700px; backdrop-filter: blur(15px);
-    box-shadow: 0 50px 100px rgba(0,0,0,0.9);
+    background: var(--panel); border: 1px solid var(--border); padding: 80px;
+    display: flex; flex-direction: column; gap: 30px; max-width: 750px;
+    backdrop-filter: blur(25px); box-shadow: 0 80px 150px rgba(0,0,0,0.9);
 }
+.batch-number { font-size: 0.65rem; letter-spacing: 5px; color: var(--text-dim); }
+.gradient-text { font-size: 3rem; background: linear-gradient(to right, #fff, #999); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.price-tag { font-family: 'Cinzel'; color: var(--gold); font-size: 1.8rem; animation: shimmer 3s infinite; }
+.description { font-weight: 200; line-height: 2.2; opacity: 0.7; font-size: 0.95rem; }
 
-.price-tag { font-family: 'Cinzel'; color: var(--gold); font-size: 1.5rem; margin-top: 10px; display: block; }
+/* Rituals & Alerts */
+.ritual-box { margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 30px; }
+.gold-text { color: var(--gold); font-size: 0.75rem; margin-bottom: 10px; }
+.ritual-detail { font-size: 0.8rem; opacity: 0.5; line-height: 1.8; }
+.safety-alert { font-size: 0.7rem; color: #777; border-left: 1px solid var(--gold); padding-left: 20px; font-style: italic; }
+
+@keyframes shimmer { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }

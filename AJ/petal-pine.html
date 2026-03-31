@@ -2,35 +2,33 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>07 | Petal & Pine</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 </head>
 <body>
     <nav>
-        <div class="logo"><a href="index.html" style="color:#fff; text-decoration:none;">AJ</a></div>
-        <div class="nav-links"><a href="index.html" style="text-decoration:none; color:#fff; font-size:0.7rem; opacity:0.6;">THE VAULT</a></div>
+        <div class="logo"><a href="index.html">AJ</a></div>
+        <div class="nav-links"><a href="index.html">THE VAULT</a></div>
     </nav>
 
     <div class="vault-container">
-        <div class="formula-card reveal">
+        <div class="formula-card reveal-card">
             <span class="batch-number">SERIAL: CC-007-SANCTUARY</span>
-            <h1 style="color:#2d5a27;">Petal & Pine</h1>
+            <h1 class="gradient-text">Petal & Pine</h1>
             <span class="price-tag">$15.00</span>
-            <p style="font-weight:200; line-height:2; opacity:0.8;">Forest Gourmand. Oversized dose of Vanilla meets resinous pine air.</p>
+            <p class="description">Forest Gourmand. Oversized dose of Vanilla meets resinous pine air.</p>
             <div class="ritual-box">
-                <h4 style="font-size:0.7rem; color:var(--gold);">SWEATER WEATHER</h4>
-                <p style="font-size:0.75rem; opacity:0.6;">Apply to wool fibers; the vanilla base acts as a natural fixative.</p>
+                <h4 class="gold-text">SWEATER WEATHER</h4>
+                <p class="ritual-detail">Apply to wool fibers; the vanilla base acts as a natural fixative.</p>
             </div>
-            <div style="margin-top: 20px;">
+            <div class="stripe-container">
                 <script async src="https://js.stripe.com/v3/buy-button.js"></script>
-                <stripe-buy-button
-                    buy-button-id="buy_btn_1TGsAmRxa3KWGE32OhCKTlIn"
-                    publishable-key="pk_live_51TGSuNRxa3KWGE32yRh5RlOoet2XIR6qzpUyzuBLCnNpwQn35I3hT77homiQExc4Gga4d5H3GUtHTBfHvwPbu6JO00a0ewR3ha">
-                </stripe-buy-button>
+                <stripe-buy-button buy-button-id="buy_btn_1TGsAmRxa3KWGE32OhCKTlIn" publishable-key="pk_live_51TGSuNRxa3KWGE32yRh5RlOoet2XIR6qzpUyzuBLCnNpwQn35I3hT77homiQExc4Gga4d5H3GUtHTBfHvwPbu6JO00a0ewR3ha"></stripe-buy-button>
             </div>
         </div>
     </div>
-    <script>gsap.from(".formula-card", { opacity: 0, y: 50, duration: 1.5, ease: "expo.out" });</script>
+    <script>gsap.from(".reveal-card", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)" });</script>
 </body>
 </html>
