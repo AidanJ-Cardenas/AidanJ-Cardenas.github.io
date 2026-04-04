@@ -3,78 +3,649 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aidan J. Cardenas - Projects</title>
+    <title>Aidan J. Cardenas — Projects</title>
     <link rel="stylesheet" href="https://use.typekit.net/wsq7zri.css">
-    <link rel="stylesheet" href="projects.css">
     <link rel="shortcut icon" href="portfolio/logo/icons/brandmark/silver.png" type="image/x-icon">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --brand-gradient: linear-gradient(270deg, #fc2f38, #c60002, #880000, #560000, #2e0000);
+            --teal: #83dbf5;
+            --bone: #d6d7d2;
+            --mid: #94938f;
+            --charcoal: #4a4743;
+            --black: #000;
+        }
+
+        html { scroll-behavior: smooth; }
+        body {
+            background: var(--black);
+            font-family: "aileron", sans-serif;
+            color: var(--bone);
+            overflow-x: hidden;
+            cursor: none;
+        }
+        a { text-decoration: none !important; color: inherit; }
+
+        /* ── CURSOR ── */
+        #cursor {
+            position: fixed; width: 10px; height: 10px;
+            background: var(--teal); border-radius: 50%;
+            pointer-events: none; z-index: 99999;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 12px var(--teal);
+            transition: width 0.2s, height 0.2s, background 0.2s;
+        }
+        #cursor-ring {
+            position: fixed; width: 36px; height: 36px;
+            border: 1px solid rgba(131,219,245,0.35); border-radius: 50%;
+            pointer-events: none; z-index: 99998;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Cursor state when over cards */
+        body.over-card #cursor {
+            width: 60px; height: 60px;
+            background: transparent;
+            border: 1px solid rgba(131,219,245,0.5);
+            box-shadow: 0 0 20px rgba(131,219,245,0.2);
+        }
+        body.over-card #cursor-ring { opacity: 0; }
+
+        /* ── GRID + SCAN OVERLAY ── */
+        body::before {
+            content: ''; position: fixed; inset: 0;
+            background-image:
+                linear-gradient(rgba(131,219,245,0.018) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(131,219,245,0.018) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none; z-index: 0;
+        }
+        body::after {
+            content: ''; position: fixed; top: -100%; left: 0; width: 100%; height: 50%;
+            background: linear-gradient(to bottom, transparent, rgba(131,219,245,0.022) 50%, transparent);
+            animation: scanPulse 10s linear infinite;
+            pointer-events: none; z-index: 0;
+        }
+        @keyframes scanPulse { to { top: 200%; } }
+
+        /* ── NAVBAR ── */
+        .navbar {
+            position: sticky; top: 0; z-index: 1000;
+            display: flex; flex-direction: column; align-items: center;
+            padding: 18px 5%; gap: 14px;
+            background: rgba(0,0,0,0.95); backdrop-filter: blur(10px);
+            border-bottom: 1px solid transparent;
+            border-image: var(--brand-gradient) 1;
+        }
+        .logo { height: 48px; }
+        .nav-links { display: flex; gap: 10px; align-items: flex-end; }
+        .nav-links figure {
+            display: flex; flex-direction: column; align-items: center;
+            position: relative; padding-bottom: 10px; gap: 6px;
+        }
+        .nav-links figure img {
+            width: 44px; height: 44px;
+            transition: filter 0.35s; filter: brightness(0.6);
+        }
+        .nav-links figcaption {
+            font-size: 0.65rem; font-weight: 900; letter-spacing: 2px;
+            color: transparent; background-image: var(--brand-gradient);
+            background-size: 300% 300%; animation: gradShift 8s ease infinite;
+            -webkit-background-clip: text; background-clip: text;
+        }
+        .nav-links a:hover figure img { filter: brightness(1.2) drop-shadow(0 0 12px var(--teal)); }
+        .nav-links figure::after {
+            content: ''; position: absolute; bottom: 0; left: 50%;
+            transform: translateX(-50%); width: 0; height: 2px;
+            background: var(--teal); box-shadow: 0 0 8px var(--teal);
+            transition: width 0.3s;
+        }
+        .nav-links a:hover figure::after,
+        .nav-links a.active figure::after { width: 80%; }
+        .nav-links a.active figure img { filter: brightness(1) drop-shadow(0 0 8px var(--teal)); }
+
+        @media (min-width: 768px) {
+            .navbar { flex-direction: row; justify-content: space-between; }
+            .logo { height: 64px; }
+            .nav-links { gap: 30px; }
+        }
+
+        /* ── PAGE CONTAINER ── */
+        .projects-container {
+            max-width: 1200px; margin: 0 auto;
+            padding: 5rem 30px 6rem;
+            position: relative; z-index: 5;
+        }
+
+        /* ── PAGE HEADER ── */
+        .page-header {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: end;
+            gap: 30px;
+            margin-bottom: 60px;
+            animation: fadeUp 0.8s ease both;
+        }
+
+        .header-left { display: flex; flex-direction: column; gap: 10px; }
+
+        .status-tag {
+            font-size: 0.55rem; font-weight: 900; letter-spacing: 4px; color: var(--charcoal);
+        }
+
+        .page-header h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900; letter-spacing: 6px; line-height: 1;
+            color: #fff;
+        }
+
+        .header-count {
+            font-size: 0.6rem; font-weight: 900; letter-spacing: 3px; color: var(--charcoal);
+            text-align: right; align-self: flex-end; padding-bottom: 4px;
+        }
+        .header-count span {
+            color: transparent; background-image: var(--brand-gradient);
+            background-size: 300% 300%; animation: gradShift 8s ease infinite;
+            -webkit-background-clip: text; background-clip: text;
+            font-size: 1.8rem; font-weight: 900; letter-spacing: -1px;
+            display: block; line-height: 1;
+        }
+
+        /* ── FILTER TABS ── */
+        .filter-bar {
+            display: flex; gap: 0; margin-bottom: 50px;
+            border: 1px solid #111; width: fit-content;
+            animation: fadeUp 0.8s ease 0.1s both;
+        }
+
+        .filter-btn {
+            padding: 12px 24px; background: transparent; border: none;
+            font-family: "aileron", sans-serif; font-weight: 900;
+            font-size: 0.6rem; letter-spacing: 3px;
+            color: var(--charcoal); cursor: none;
+            position: relative; overflow: hidden;
+            transition: color 0.3s;
+            border-right: 1px solid #111;
+        }
+        .filter-btn:last-child { border-right: none; }
+
+        .filter-btn::before {
+            content: ''; position: absolute; inset: 0;
+            background: var(--brand-gradient);
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+        }
+        .filter-btn:hover { color: rgba(255,255,255,0.7); }
+        .filter-btn:hover::before { transform: translateY(50%); }
+
+        .filter-btn.active {
+            color: #fff;
+            background: rgba(198,0,2,0.15);
+            border-bottom: 2px solid #c60002;
+        }
+
+        /* ── SECTION LABEL ── */
+        .section-block { margin-bottom: 80px; }
+
+        .section-header {
+            display: flex; align-items: center; gap: 20px;
+            margin-bottom: 30px;
+            animation: fadeUp 0.8s ease 0.2s both;
+        }
+
+        .section-type {
+            font-size: 0.55rem; font-weight: 900; letter-spacing: 4px;
+            color: var(--charcoal); white-space: nowrap;
+        }
+
+        .section-rule {
+            flex: 1; height: 1px;
+            background: linear-gradient(to right, rgba(255,255,255,0.05), transparent);
+        }
+
+        .section-h2 {
+            font-size: 1rem; font-weight: 900; letter-spacing: 5px;
+            color: #fff; white-space: nowrap;
+        }
+
+        /* ── GALLERY GRID ── */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2px;
+        }
+
+        /* Featured card spans 2 cols on wide screens */
+        .project-card.featured {
+            grid-column: span 1;
+        }
+        @media (min-width: 900px) {
+            .project-card.featured { grid-column: span 2; }
+        }
+
+        /* ── PROJECT CARD ── */
+        .project-card {
+            position: relative; overflow: hidden;
+            background: #050505;
+            border: 1px solid #0d0d0d;
+            cursor: none;
+            transition: border-color 0.4s ease;
+        }
+        .project-card:hover { border-color: rgba(131,219,245,0.12); }
+
+        /* Browser chrome for web cards */
+        .browser-chrome {
+            background: #080808;
+            padding: 10px 14px;
+            display: flex; align-items: center; gap: 10px;
+            border-bottom: 1px solid #111;
+        }
+        .chrome-dots { display: flex; gap: 5px; }
+        .chrome-dot { width: 7px; height: 7px; border-radius: 50%; background: #1a1a1a; }
+        .chrome-bar {
+            flex: 1; height: 6px; background: #0f0f0f; border-radius: 2px;
+            font-size: 0.45rem; font-weight: 900; letter-spacing: 1px;
+            color: #222; display: flex; align-items: center; padding: 0 8px;
+        }
+
+        /* Media container */
+        .project-media {
+            position: relative;
+            aspect-ratio: 16 / 9;
+            overflow: hidden;
+        }
+
+        .project-card.featured .project-media {
+            aspect-ratio: 21 / 9;
+        }
+
+        .project-media img {
+            width: 100%; height: 100%; object-fit: cover;
+            filter: grayscale(100%) contrast(1.05) brightness(0.85);
+            transition: filter 0.6s ease, transform 0.7s cubic-bezier(0.4,0,0.2,1);
+            display: block;
+        }
+        .project-card:hover .project-media img {
+            filter: grayscale(0%) contrast(1.05) brightness(1);
+            transform: scale(1.04);
+        }
+
+        /* Overlay */
+        .card-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(
+                to top,
+                rgba(0,0,0,0.95) 0%,
+                rgba(0,0,0,0.4) 50%,
+                transparent 100%
+            );
+            display: flex; flex-direction: column; justify-content: flex-end;
+            padding: 28px;
+            transform: translateY(30%);
+            transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
+        }
+        .project-card:hover .card-overlay { transform: translateY(0); }
+
+        .overlay-tag {
+            font-size: 0.5rem; font-weight: 900; letter-spacing: 3px;
+            color: var(--teal); margin-bottom: 6px;
+            opacity: 0; transform: translateY(10px);
+            transition: opacity 0.4s ease 0.1s, transform 0.4s ease 0.1s;
+        }
+        .project-card:hover .overlay-tag { opacity: 1; transform: translateY(0); }
+
+        .overlay-title {
+            font-size: 1rem; font-weight: 900; letter-spacing: 3px; color: #fff;
+            margin-bottom: 6px;
+        }
+
+        .overlay-desc {
+            font-size: 0.7rem; font-weight: 400; letter-spacing: 1px;
+            color: rgba(255,255,255,0.55);
+            opacity: 0; transform: translateY(8px);
+            transition: opacity 0.4s ease 0.15s, transform 0.4s ease 0.15s;
+            margin-bottom: 16px; line-height: 1.5;
+        }
+        .project-card:hover .overlay-desc { opacity: 1; transform: translateY(0); }
+
+        .overlay-actions {
+            display: flex; gap: 10px; align-items: center;
+            opacity: 0; transform: translateY(8px);
+            transition: opacity 0.4s ease 0.2s, transform 0.4s ease 0.2s;
+        }
+        .project-card:hover .overlay-actions { opacity: 1; transform: translateY(0); }
+
+        .live-link {
+            display: inline-flex; align-items: center; gap: 8px;
+            font-size: 0.6rem; font-weight: 900; letter-spacing: 2px;
+            color: #fff; border: 1px solid rgba(255,255,255,0.25);
+            padding: 9px 16px;
+            position: relative; overflow: hidden;
+            transition: border-color 0.3s;
+        }
+        .live-link::before {
+            content: ''; position: absolute; inset: 0;
+            background: var(--teal); opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .live-link:hover { border-color: var(--teal); color: #000; }
+        .live-link:hover::before { opacity: 1; }
+        .live-link span { position: relative; z-index: 1; transition: color 0.3s; }
+        .live-link:hover span { color: #000; }
+
+        .card-type-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            font-size: 0.5rem; font-weight: 900; letter-spacing: 2px;
+            color: var(--charcoal); border: 1px solid #1a1a1a;
+            padding: 8px 12px;
+        }
+        .badge-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--charcoal); }
+
+        /* Shine sweep on hover */
+        .project-card::after {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.03) 50%, transparent 60%);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+            pointer-events: none; z-index: 10;
+        }
+        .project-card:hover::after { transform: translateX(100%); }
+
+        /* Photo-specific: no browser chrome */
+        .photo-entry .browser-chrome { display: none; }
+        .photo-entry .project-media { aspect-ratio: 4/5; }
+        @media (min-width: 600px) { .photo-entry .project-media { aspect-ratio: 3/4; } }
+
+        /* ── DIVIDER ── */
+        .section-divider {
+            width: 100%; height: 1px;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.04), transparent);
+            margin: 60px 0;
+        }
+
+        /* ── CTA STRIP ── */
+        .cta-strip {
+            margin-top: 80px; padding: 50px;
+            background: rgba(255,255,255,0.01);
+            border: 1px solid #0f0f0f;
+            display: flex; flex-direction: column; align-items: center;
+            gap: 20px; text-align: center;
+            position: relative; overflow: hidden;
+            animation: fadeUp 0.8s ease 0.4s both;
+        }
+        .cta-strip::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; height: 1px;
+            background: var(--brand-gradient);
+        }
+        .cta-label { font-size: 0.55rem; font-weight: 900; letter-spacing: 4px; color: var(--charcoal); }
+        .cta-heading { font-size: clamp(1.2rem, 3vw, 1.8rem); font-weight: 900; letter-spacing: 4px; color: #fff; }
+        .cta-heading em { font-style: normal; color: transparent; background-image: var(--brand-gradient); background-size: 300% 300%; animation: gradShift 10s ease infinite; -webkit-background-clip: text; background-clip: text; }
+        .cta-btn {
+            display: inline-flex; align-items: center; gap: 12px;
+            padding: 18px 40px; background: var(--brand-gradient);
+            background-size: 300% 300%; animation: gradShift 8s ease infinite;
+            color: #fff; font-family: "aileron", sans-serif;
+            font-weight: 900; font-size: 0.7rem; letter-spacing: 3px;
+            border: none; cursor: none;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .cta-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(198,0,2,0.4); }
+
+        /* ── FOOTER ── */
+        .footer {
+            background: var(--black); padding: 50px 20px;
+            text-align: center; border-top: 1px solid transparent;
+            border-image: var(--brand-gradient) 1;
+            position: relative; z-index: 10;
+        }
+        .footer-brandmark { margin-bottom: 20px; }
+        .footer-brandmark img { height: 36px; opacity: 0.5; filter: brightness(0.6); transition: 0.4s ease; }
+        .footer:hover .footer-brandmark img { opacity: 0.9; filter: brightness(1) drop-shadow(0 0 10px var(--teal)); }
+        .copyright { font-size: 0.65rem; font-weight: 900; letter-spacing: 2px; color: var(--charcoal); margin-bottom: 16px; }
+        .footer-links { display: flex; justify-content: center; gap: 30px; }
+        .footer-links a { font-size: 0.65rem; font-weight: 900; letter-spacing: 2px; color: transparent; background-image: var(--brand-gradient); background-size: 300% 300%; animation: gradShift 9s ease infinite; -webkit-background-clip: text; background-clip: text; }
+
+        /* ── KEYFRAMES ── */
+        @keyframes gradShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Scroll reveal */
+        .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        /* Staggered card reveal */
+        .gallery-grid .project-card {
+            opacity: 0; transform: translateY(24px);
+            transition: opacity 0.6s ease, transform 0.6s ease, border-color 0.4s ease;
+        }
+        .gallery-grid.visible .project-card:nth-child(1) { opacity: 1; transform: translateY(0); transition-delay: 0.05s; }
+        .gallery-grid.visible .project-card:nth-child(2) { opacity: 1; transform: translateY(0); transition-delay: 0.12s; }
+        .gallery-grid.visible .project-card:nth-child(3) { opacity: 1; transform: translateY(0); transition-delay: 0.19s; }
+        .gallery-grid.visible .project-card:nth-child(4) { opacity: 1; transform: translateY(0); transition-delay: 0.26s; }
+    </style>
 </head>
 <body>
+    <div id="cursor"></div>
+    <div id="cursor-ring"></div>
+
     <nav class="navbar">
-        <img src="portfolio/logo/secondary/silverNP.png" alt="Logo" class="logo">
+        <img src="portfolio/logo/secondary/silverNP.png" alt="AJC" class="logo">
         <div class="nav-links">
-            <a href="home.html"><figure><img src="portfolio/logo/icons/home/home silver.svg" alt="home"><figcaption>HOME</figcaption></figure></a>
-            <a href="about.html"><figure><img src="portfolio/logo/icons/user/user silver.svg" alt="about"><figcaption>ABOUT ME</figcaption></figure></a>
-            <a href="contact.html"><figure><img src="portfolio/logo/icons/contact/contact silver.svg" alt="contact"><figcaption>CONTACT</figcaption></figure></a>
+            <a href="index.html"><figure><img src="portfolio/logo/icons/home/home silver.svg" alt="Home"><figcaption>HOME</figcaption></figure></a>
+            <a href="about.html"><figure><img src="portfolio/logo/icons/user/user silver.svg" alt="About"><figcaption>ABOUT ME</figcaption></figure></a>
+            <a href="contact.html"><figure><img src="portfolio/logo/icons/contact/contact silver.svg" alt="Contact"><figcaption>CONTACT</figcaption></figure></a>
         </div>
     </nav>
 
     <main class="projects-container">
-        <section class="project-block">
-            <header class="page-header">
-                <span class="status-tag">TYPE: DEVELOPMENT // DESIGN</span>
-                <h1>WEB ARCHITECTURE</h1>
-            </header>
 
-            <div class="gallery-grid">
-                <div class="project-card web-entry">
-                    <div class="browser-ui">
-                        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        <!-- Header -->
+        <header class="page-header">
+            <div class="header-left">
+                <span class="status-tag">TYPE: DEVELOPMENT // DESIGN // PHOTOGRAPHY</span>
+                <h1>SELECTED<br>WORK</h1>
+            </div>
+            <div class="header-count">
+                <span id="projectCount">2</span>
+                PROJECTS
+            </div>
+        </header>
+
+        <!-- Filter bar -->
+        <div class="filter-bar">
+            <button class="filter-btn active" data-filter="all">ALL</button>
+            <button class="filter-btn" data-filter="web">WEB</button>
+            <button class="filter-btn" data-filter="photo">PHOTO</button>
+        </div>
+
+        <!-- Web Architecture -->
+        <section class="section-block" data-section="web">
+            <div class="section-header reveal">
+                <span class="section-type">01 //</span>
+                <h2 class="section-h2">WEB ARCHITECTURE</h2>
+                <div class="section-rule"></div>
+                <span class="section-type">DEVELOPMENT & DESIGN</span>
+            </div>
+
+            <div class="gallery-grid" id="webGrid">
+                <!-- Featured card -->
+                <div class="project-card web-entry featured" data-category="web">
+                    <div class="browser-chrome">
+                        <div class="chrome-dots">
+                            <div class="chrome-dot"></div>
+                            <div class="chrome-dot"></div>
+                            <div class="chrome-dot"></div>
+                        </div>
+                        <div class="chrome-bar">kimberlykesler.github.io</div>
                     </div>
                     <div class="project-media">
                         <img src="portfolio/photos/kimberly-kesler-preview.jpg" alt="Kimberly Kesler Portfolio">
                         <div class="card-overlay">
-                            <h3>KIMBERLY_KESLER</h3>
-                            <p>UI DESIGN & WEB ARCHITECTURE</p>
-                            <a href="https://kimberlykesler.github.io" target="_blank" class="live-link">VIEW LIVE SITE _</a>
+                            <span class="overlay-tag">FEATURED PROJECT</span>
+                            <h3 class="overlay-title">KIMBERLY_KESLER</h3>
+                            <p class="overlay-desc">Full UI design and web architecture for photographer and creative professional Kimberly Kesler. Custom layout, responsive design, and brand-aligned visual system.</p>
+                            <div class="overlay-actions">
+                                <a href="https://kimberlykesler.github.io" target="_blank" class="live-link">
+                                    <span>VIEW LIVE SITE</span>
+                                    <span>↗</span>
+                                </a>
+                                <div class="card-type-badge">
+                                    <div class="badge-dot"></div>
+                                    <span>UI / DEV</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+
+                <!-- Add more web cards below as your portfolio grows -->
+                <!-- 
+                <div class="project-card web-entry" data-category="web">
+                    <div class="browser-chrome"> ... </div>
+                    <div class="project-media">
+                        <img src="..." alt="...">
+                        <div class="card-overlay"> ... </div>
+                    </div>
                 </div>
+                -->
+            </div>
         </section>
 
         <div class="section-divider"></div>
 
-        <section class="project-block">
-            <header class="page-header">
-                <span class="status-tag">TYPE: VISUAL_DATA // OPTICS</span>
-                <h1>PHOTOGRAPHY</h1>
-            </header>
+        <!-- Photography -->
+        <section class="section-block" data-section="photo">
+            <div class="section-header reveal">
+                <span class="section-type">02 //</span>
+                <h2 class="section-h2">PHOTOGRAPHY</h2>
+                <div class="section-rule"></div>
+                <span class="section-type">VISUAL DATA // OPTICS</span>
+            </div>
 
-            <div class="gallery-grid">
-                <div class="project-card photo-entry">
+            <div class="gallery-grid" id="photoGrid">
+                <div class="project-card photo-entry" data-category="photo">
                     <div class="project-media">
-                        <img src="portfolio/projects/photo-thumbnail.jpg" alt="Photography Project">
+                        <img src="portfolio/projects/photo-thumbnail.jpg" alt="Visual Data 01">
                         <div class="card-overlay">
-                            <h3>VISUAL_DATA_01</h3>
-                            <p>PROFESSIONAL PHOTOGRAPHY</p>
+                            <span class="overlay-tag">EDITORIAL</span>
+                            <h3 class="overlay-title">VISUAL_DATA_01</h3>
+                            <p class="overlay-desc">Professional photography series exploring contrast, shadow, and architectural form.</p>
+                            <div class="overlay-actions">
+                                <div class="card-type-badge">
+                                    <div class="badge-dot"></div>
+                                    <span>PHOTOGRAPHY</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+
+                <!-- Add more photo cards below -->
+                <!--
+                <div class="project-card photo-entry" data-category="photo">
+                    <div class="project-media">
+                        <img src="..." alt="...">
+                        <div class="card-overlay"> ... </div>
+                    </div>
                 </div>
+                -->
+            </div>
         </section>
+
+        <!-- CTA -->
+        <div class="cta-strip">
+            <span class="cta-label">READY TO COLLABORATE?</span>
+            <h2 class="cta-heading">LET'S BUILD SOMETHING <em>WORTH REMEMBERING.</em></h2>
+            <a href="contact.html" class="cta-btn">
+                <span>INITIATE PROJECT</span>
+                <span>→</span>
+            </a>
+        </div>
+
     </main>
 
     <footer class="footer">
-        <div class="footer-brandmark">
-            <img src="portfolio/logo/icons/brandmark/silver.png" alt="AJC Brandmark">
-        </div>
-
-        <p>© 2026 Aidan J. Cardenas</p>
-
+        <div class="footer-brandmark"><img src="portfolio/logo/icons/brandmark/silver.png" alt="AJC"></div>
+        <p class="copyright">© 2026 AIDAN J. CARDENAS</p>
         <div class="footer-links">
             <a href="mailto:aidan.j.cardenas@outlook.com">EMAIL</a>
             <a href="https://www.instagram.com/aidanj._cardenas/" target="_blank">INSTAGRAM</a>
         </div>
     </footer>
+
+    <script>
+        // ── CURSOR ──
+        const cursor = document.getElementById('cursor');
+        const ring = document.getElementById('cursor-ring');
+        let rx = 0, ry = 0;
+
+        document.addEventListener('mousemove', e => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            rx += (e.clientX - rx) * 0.1;
+            ry += (e.clientY - ry) * 0.1;
+        });
+
+        (function animRing() {
+            ring.style.left = rx + 'px';
+            ring.style.top = ry + 'px';
+            requestAnimationFrame(animRing);
+        })();
+
+        // Cursor expand on cards
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.addEventListener('mouseenter', () => document.body.classList.add('over-card'));
+            card.addEventListener('mouseleave', () => document.body.classList.remove('over-card'));
+        });
+
+        // ── FILTER ──
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const sections = document.querySelectorAll('.section-block');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const filter = btn.dataset.filter;
+
+                sections.forEach(section => {
+                    const sectionType = section.dataset.section;
+                    if (filter === 'all' || filter === sectionType) {
+                        section.style.display = '';
+                        setTimeout(() => { section.style.opacity = '1'; section.style.transform = 'translateY(0)'; }, 10);
+                    } else {
+                        section.style.opacity = '0';
+                        section.style.transform = 'translateY(20px)';
+                        setTimeout(() => { section.style.display = 'none'; }, 300);
+                    }
+                });
+
+                // Update count
+                const cards = filter === 'all'
+                    ? document.querySelectorAll('.project-card')
+                    : document.querySelectorAll(`.project-card[data-category="${filter}"]`);
+                document.getElementById('projectCount').textContent = cards.length;
+            });
+        });
+
+        sections.forEach(s => {
+            s.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+        });
+
+        // ── SCROLL REVEAL ──
+        const io = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal, .gallery-grid').forEach(el => io.observe(el));
+    </script>
 </body>
 </html>
