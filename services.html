@@ -3,83 +3,332 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aidan J. Cardenas - Services</title>
+    <title>Aidan J. Cardenas — Services</title>
     <link rel="stylesheet" href="https://use.typekit.net/wsq7zri.css">
-    <link rel="stylesheet" href="services.css">
     <link rel="shortcut icon" href="portfolio/logo/icons/brandmark/silver.png" type="image/x-icon">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --brand-gradient: linear-gradient(270deg, #fc2f38, #c60002, #880000, #560000, #2e0000);
+            --teal: #83dbf5;
+            --bone: #d6d7d2;
+            --mid: #94938f;
+            --charcoal: #4a4743;
+            --black: #000;
+        }
+        html { scroll-behavior: smooth; }
+        body { background: var(--black); font-family: "aileron", sans-serif; color: var(--bone); overflow-x: hidden; cursor: none; }
+        a { text-decoration: none !important; color: inherit; }
+
+        #cursor { position: fixed; width: 10px; height: 10px; background: var(--teal); border-radius: 50%; pointer-events: none; z-index: 99999; transform: translate(-50%,-50%); box-shadow: 0 0 12px var(--teal); }
+        #cursor-ring { position: fixed; width: 36px; height: 36px; border: 1px solid rgba(131,219,245,0.35); border-radius: 50%; pointer-events: none; z-index: 99998; transform: translate(-50%,-50%); }
+
+        body::before { content: ''; position: fixed; inset: 0; background-image: linear-gradient(rgba(131,219,245,0.018) 1px, transparent 1px), linear-gradient(90deg, rgba(131,219,245,0.018) 1px, transparent 1px); background-size: 60px 60px; pointer-events: none; z-index: 0; }
+        body::after { content: ''; position: fixed; top: -100%; left: 0; width: 100%; height: 50%; background: linear-gradient(to bottom, transparent, rgba(131,219,245,0.022) 50%, transparent); animation: scanPulse 10s linear infinite; pointer-events: none; z-index: 0; }
+        @keyframes scanPulse { to { top: 200%; } }
+
+        /* ── NAVBAR ── */
+        .navbar { position: sticky; top: 0; z-index: 1000; display: flex; flex-direction: column; align-items: center; padding: 18px 5%; gap: 14px; background: rgba(0,0,0,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid transparent; border-image: var(--brand-gradient) 1; }
+        .logo { height: 48px; }
+        .nav-links { display: flex; gap: 10px; align-items: flex-end; }
+        .nav-links figure { display: flex; flex-direction: column; align-items: center; position: relative; padding-bottom: 10px; gap: 6px; }
+        .nav-links figure img { width: 44px; height: 44px; transition: filter 0.35s; filter: brightness(0.6); }
+        .nav-links figcaption { font-size: 0.65rem; font-weight: 900; letter-spacing: 2px; color: transparent; background-image: var(--brand-gradient); background-size: 300% 300%; animation: gradShift 8s ease infinite; -webkit-background-clip: text; background-clip: text; }
+        .nav-links a:hover figure img { filter: brightness(1.2) drop-shadow(0 0 12px var(--teal)); }
+        .nav-links figure::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 0; height: 2px; background: var(--teal); box-shadow: 0 0 8px var(--teal); transition: width 0.3s; }
+        .nav-links a:hover figure::after, .nav-links a.active figure::after { width: 80%; }
+        .nav-links a.active figure img { filter: brightness(1) drop-shadow(0 0 8px var(--teal)); }
+        @media (min-width: 768px) { .navbar { flex-direction: row; justify-content: space-between; } .logo { height: 64px; } .nav-links { gap: 30px; } }
+
+        /* ── PAGE CONTENT ── */
+        .services-container {
+            max-width: 1100px; margin: 5rem auto; padding: 0 30px;
+            position: relative; z-index: 5;
+        }
+
+        .page-header {
+            display: flex; flex-direction: column; gap: 10px;
+            margin-bottom: 80px;
+        }
+
+        .header-line {
+            display: flex; align-items: center; gap: 20px;
+        }
+
+        .header-rule {
+            flex: 1; height: 1px;
+            background: linear-gradient(to right, rgba(198,0,2,0.6), transparent);
+        }
+
+        .status-tag { font-size: 0.55rem; font-weight: 900; letter-spacing: 4px; color: var(--charcoal); }
+
+        .page-header h1 {
+            font-size: clamp(1.8rem, 5vw, 3rem);
+            font-weight: 900; letter-spacing: 8px;
+            line-height: 1; color: #fff;
+        }
+
+        .page-header h1 span {
+            color: transparent;
+            background-image: var(--brand-gradient);
+            background-size: 300% 300%;
+            animation: gradShift 10s ease infinite;
+            -webkit-background-clip: text; background-clip: text;
+        }
+
+        /* ── SERVICES GRID ── */
+        .services-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2px;
+        }
+        @media (min-width: 640px) { .services-grid { grid-template-columns: repeat(3, 1fr); } }
+
+        .service-card {
+            position: relative; overflow: hidden;
+            background: #030303;
+            border: 1px solid #0f0f0f;
+            padding: 50px 40px;
+            transition: border-color 0.4s ease, transform 0.4s ease;
+            display: flex; flex-direction: column; gap: 20px;
+        }
+
+        /* Top accent bar */
+        .service-card::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; height: 2px;
+            background: var(--brand-gradient);
+            transform: scaleX(0); transform-origin: left;
+            transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
+        }
+
+        /* Glow backdrop */
+        .card-glow {
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(198,0,2,0.08) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .service-card:hover { border-color: rgba(131,219,245,0.15); transform: translateY(-6px); }
+        .service-card:hover::before { transform: scaleX(1); }
+        .service-card:hover .card-glow { opacity: 1; }
+        .service-card:hover .service-icon img { filter: grayscale(0) brightness(1); opacity: 1; }
+        .service-card:hover .service-list li { color: rgba(131,219,245,0.7); }
+
+        .service-num {
+            font-size: 0.5rem; font-weight: 900; letter-spacing: 3px; color: var(--charcoal);
+        }
+
+        .service-icon img {
+            width: 36px; height: 36px; object-fit: contain;
+            filter: grayscale(1) brightness(0.5);
+            opacity: 0.5;
+            transition: 0.4s ease;
+        }
+
+        .service-card h3 {
+            font-size: 1rem; font-weight: 900; letter-spacing: 4px; color: #fff;
+            position: relative; z-index: 1;
+        }
+
+        .service-card p {
+            font-size: 0.85rem; line-height: 1.7; color: var(--mid);
+            position: relative; z-index: 1;
+        }
+
+        .service-divider {
+            width: 30px; height: 1px;
+            background: rgba(198,0,2,0.5);
+        }
+
+        .service-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+        .service-list li {
+            font-size: 0.6rem; font-weight: 900; letter-spacing: 2px; color: var(--charcoal);
+            transition: color 0.3s ease;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .service-list li::before {
+            content: ''; width: 12px; height: 1px;
+            background: currentColor; flex-shrink: 0;
+        }
+
+        /* ── PROCESS STRIP ── */
+        .process-section {
+            margin-top: 120px;
+        }
+
+        .process-header {
+            border-left: 3px solid #c60002; padding-left: 20px; margin-bottom: 50px;
+        }
+        .process-header h2 { font-size: 1rem; font-weight: 900; letter-spacing: 5px; }
+        .process-label { font-size: 0.55rem; font-weight: 900; letter-spacing: 3px; color: var(--charcoal); }
+
+        .process-steps {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
+        @media (min-width: 480px) { .process-steps { grid-template-columns: repeat(4, 1fr); } }
+
+        .process-step {
+            padding: 30px 24px;
+            border: 1px solid #0a0a0a;
+            border-right: none;
+            position: relative;
+            transition: background 0.3s;
+        }
+        .process-step:last-child { border-right: 1px solid #0a0a0a; }
+        .process-step:hover { background: rgba(255,255,255,0.01); }
+
+        .step-num {
+            font-size: 2.5rem; font-weight: 900; letter-spacing: -2px;
+            color: transparent;
+            background-image: linear-gradient(135deg, rgba(198,0,2,0.2), rgba(198,0,2,0.05));
+            -webkit-background-clip: text; background-clip: text;
+            display: block; margin-bottom: 12px;
+        }
+        .step-name { font-size: 0.65rem; font-weight: 900; letter-spacing: 3px; color: var(--bone); margin-bottom: 8px; }
+        .step-desc { font-size: 0.75rem; line-height: 1.6; color: var(--charcoal); }
+
+        /* ── FOOTER ── */
+        .footer { background: var(--black); padding: 50px 20px; text-align: center; border-top: 1px solid transparent; border-image: var(--brand-gradient) 1; position: relative; z-index: 10; }
+        .footer-brandmark { margin-bottom: 20px; }
+        .footer-brandmark img { height: 36px; opacity: 0.5; filter: brightness(0.6); transition: 0.4s ease; }
+        .footer:hover .footer-brandmark img { opacity: 0.9; filter: brightness(1) drop-shadow(0 0 10px var(--teal)); }
+        .copyright { font-size: 0.65rem; font-weight: 900; letter-spacing: 2px; color: var(--charcoal); margin-bottom: 16px; }
+        .footer-links { display: flex; justify-content: center; gap: 30px; }
+        .footer-links a { font-size: 0.65rem; font-weight: 900; letter-spacing: 2px; color: transparent; background-image: var(--brand-gradient); background-size: 300% 300%; animation: gradShift 9s ease infinite; -webkit-background-clip: text; background-clip: text; }
+
+        @keyframes gradShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+
+        .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+    </style>
 </head>
 <body>
+    <div id="cursor"></div>
+    <div id="cursor-ring"></div>
+
     <nav class="navbar">
-        <img src="portfolio/logo/secondary/silverNP.png" alt="Logo" class="logo">
+        <img src="portfolio/logo/secondary/silverNP.png" alt="AJC" class="logo">
         <div class="nav-links">
-            <a href="home.html"><figure><img src="portfolio/logo/icons/home/home silver.svg" alt="home"><figcaption>HOME</figcaption></figure></a>
-            <a href="about.html"><figure><img src="portfolio/logo/icons/user/user silver.svg" alt="about"><figcaption>ABOUT ME</figcaption></figure></a>
-            <a href="contact.html"><figure><img src="portfolio/logo/icons/contact/contact silver.svg" alt="contact"><figcaption>CONTACT</figcaption></figure></a>
+            <a href="index.html"><figure><img src="portfolio/logo/icons/home/home silver.svg" alt="Home"><figcaption>HOME</figcaption></figure></a>
+            <a href="about.html"><figure><img src="portfolio/logo/icons/user/user silver.svg" alt="About"><figcaption>ABOUT ME</figcaption></figure></a>
+            <a href="contact.html"><figure><img src="portfolio/logo/icons/contact/contact silver.svg" alt="Contact"><figcaption>CONTACT</figcaption></figure></a>
         </div>
     </nav>
 
     <main class="services-container">
-        <header class="page-header">
-            <span class="status-tag">SYSTEM_CAPABILITIES // 2026</span>
-            <h1>SERVICES & SOLUTIONS</h1>
+        <header class="page-header reveal">
+            <div class="header-line">
+                <span class="status-tag">SYSTEM_CAPABILITIES // 2026</span>
+                <div class="header-rule"></div>
+            </div>
+            <h1>SERVICES &<br><span>SOLUTIONS</span></h1>
         </header>
 
-        <div class="services-grid">
+        <div class="services-grid reveal">
             <div class="service-card">
                 <div class="card-glow"></div>
-                <div class="service-icon">
-                    <img src="portfolio/logo/icons/web/web silver.svg" alt="Web">
-                </div>
+                <span class="service-num">01</span>
+                <div class="service-icon"><img src="portfolio/logo/icons/web/web silver.svg" alt="Web"></div>
                 <h3>WEB ARCHITECTURE</h3>
-                <p>Building high-performance, responsive interfaces with a focus on dark-mode aesthetics and clean code structure.</p>
+                <p>High-performance, responsive interfaces built with a focus on dark-mode aesthetics and clean, maintainable code.</p>
+                <div class="service-divider"></div>
                 <ul class="service-list">
-                    <li>_ UI/UX DESIGN</li>
-                    <li>_ FRONT-END DEVELOPMENT</li>
-                    <li>_ PORTFOLIO DEPLOYMENT</li>
+                    <li>UI/UX DESIGN</li>
+                    <li>FRONT-END DEVELOPMENT</li>
+                    <li>PORTFOLIO DEPLOYMENT</li>
+                    <li>PERFORMANCE OPTIMIZATION</li>
                 </ul>
             </div>
 
             <div class="service-card">
                 <div class="card-glow"></div>
-                <div class="service-icon">
-                    <img src="portfolio/logo/icons/user/user silver.svg" alt="Photography">
-                </div>
+                <span class="service-num">02</span>
+                <div class="service-icon"><img src="portfolio/logo/icons/user/user silver.svg" alt="Photography"></div>
                 <h3>VISUAL DATA</h3>
                 <p>Professional digital photography specializing in architectural lines, street narratives, and high-contrast portraits.</p>
+                <div class="service-divider"></div>
                 <ul class="service-list">
-                    <li>_ EDITORIAL PHOTOGRAPHY</li>
-                    <li>_ POST-PRODUCTION</li>
-                    <li>_ BRAND ASSETS</li>
+                    <li>EDITORIAL PHOTOGRAPHY</li>
+                    <li>POST-PRODUCTION</li>
+                    <li>BRAND ASSETS</li>
+                    <li>PRINT & DIGITAL MEDIA</li>
                 </ul>
             </div>
 
             <div class="service-card">
                 <div class="card-glow"></div>
-                <div class="service-icon">
-                    <img src="portfolio/logo/icons/brandmark/silver.png" alt="Creative">
-                </div>
+                <span class="service-num">03</span>
+                <div class="service-icon"><img src="portfolio/logo/icons/brandmark/silver.png" alt="Creative"></div>
                 <h3>CREATIVE STRATEGY</h3>
-                <p>Defining brand identities and visual languages that stand out in a digital-first landscape.</p>
+                <p>Defining brand identities and visual languages that stand out in a digital-first, saturated landscape.</p>
+                <div class="service-divider"></div>
                 <ul class="service-list">
-                    <li>_ BRAND IDENTITY</li>
-                    <li>_ LOGO ARCHITECTURE</li>
-                    <li>_ DESIGN SYSTEMS</li>
+                    <li>BRAND IDENTITY</li>
+                    <li>LOGO ARCHITECTURE</li>
+                    <li>DESIGN SYSTEMS</li>
+                    <li>STYLE GUIDELINES</li>
                 </ul>
             </div>
         </div>
+
+        <!-- Process -->
+        <section class="process-section reveal">
+            <div class="process-header">
+                <p class="process-label">HOW IT WORKS</p>
+                <h2>ENGAGEMENT PROTOCOL</h2>
+            </div>
+            <div class="process-steps">
+                <div class="process-step">
+                    <span class="step-num">01</span>
+                    <p class="step-name">BRIEF</p>
+                    <p class="step-desc">Define scope, objectives, and deliverables. Initial consultation to align vision.</p>
+                </div>
+                <div class="process-step">
+                    <span class="step-num">02</span>
+                    <p class="step-name">DESIGN</p>
+                    <p class="step-desc">Concepts, wireframes, and visual direction presented for review and refinement.</p>
+                </div>
+                <div class="process-step">
+                    <span class="step-num">03</span>
+                    <p class="step-name">BUILD</p>
+                    <p class="step-desc">Development and production with iterative feedback loops at key milestones.</p>
+                </div>
+                <div class="process-step">
+                    <span class="step-num">04</span>
+                    <p class="step-name">DEPLOY</p>
+                    <p class="step-desc">Final delivery, handoff, and optional ongoing support for the long haul.</p>
+                </div>
+            </div>
+        </section>
     </main>
 
     <footer class="footer">
-        <div class="footer-brandmark">
-            <img src="portfolio/logo/icons/brandmark/silver.png" alt="AJC Brandmark">
-        </div>
-
-        <p>© 2026 Aidan J. Cardenas</p>
-
+        <div class="footer-brandmark"><img src="portfolio/logo/icons/brandmark/silver.png" alt="AJC"></div>
+        <p class="copyright">© 2026 AIDAN J. CARDENAS</p>
         <div class="footer-links">
             <a href="mailto:aidan.j.cardenas@outlook.com">EMAIL</a>
             <a href="https://www.instagram.com/aidanj._cardenas/" target="_blank">INSTAGRAM</a>
         </div>
     </footer>
+
+    <script>
+        const cursor = document.getElementById('cursor');
+        const ring = document.getElementById('cursor-ring');
+        let rx = 0, ry = 0;
+        document.addEventListener('mousemove', e => {
+            cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px';
+            rx += (e.clientX - rx) * 0.12; ry += (e.clientY - ry) * 0.12;
+        });
+        (function animRing() { ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; requestAnimationFrame(animRing); })();
+
+        const io = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+    </script>
 </body>
 </html>
