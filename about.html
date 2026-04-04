@@ -3,117 +3,369 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aidan J. Cardenas - About</title>
+    <title>Aidan J. Cardenas — About</title>
     <link rel="stylesheet" href="https://use.typekit.net/wsq7zri.css">
-    <link rel="stylesheet" href="about.css">
     <link rel="shortcut icon" href="portfolio/logo/icons/brandmark/silver.png" type="image/x-icon">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --brand-gradient: linear-gradient(270deg, #fc2f38, #c60002, #880000, #560000, #2e0000);
+            --teal: #83dbf5;
+            --bone: #d6d7d2;
+            --mid: #94938f;
+            --charcoal: #4a4743;
+            --black: #000;
+        }
+
+        html { scroll-behavior: smooth; }
+        body {
+            background: var(--black);
+            font-family: "aileron", sans-serif;
+            color: var(--bone);
+            overflow-x: hidden;
+            cursor: none;
+        }
+        a { text-decoration: none !important; color: inherit; }
+
+        /* ── CURSOR ── */
+        #cursor { position: fixed; width: 10px; height: 10px; background: var(--teal); border-radius: 50%; pointer-events: none; z-index: 99999; transform: translate(-50%,-50%); box-shadow: 0 0 12px var(--teal); }
+        #cursor-ring { position: fixed; width: 36px; height: 36px; border: 1px solid rgba(131,219,245,0.35); border-radius: 50%; pointer-events: none; z-index: 99998; transform: translate(-50%,-50%); }
+
+        /* ── GRID + SCAN ── */
+        body::before {
+            content: ''; position: fixed; inset: 0;
+            background-image: linear-gradient(rgba(131,219,245,0.018) 1px, transparent 1px), linear-gradient(90deg, rgba(131,219,245,0.018) 1px, transparent 1px);
+            background-size: 60px 60px; pointer-events: none; z-index: 0;
+        }
+        body::after {
+            content: ''; position: fixed; top: -100%; left: 0; width: 100%; height: 50%;
+            background: linear-gradient(to bottom, transparent, rgba(131,219,245,0.022) 50%, transparent);
+            animation: scanPulse 10s linear infinite; pointer-events: none; z-index: 0;
+        }
+        @keyframes scanPulse { to { top: 200%; } }
+
+        /* ── NAVBAR ── */
+        .navbar {
+            position: sticky; top: 0; z-index: 1000;
+            display: flex; flex-direction: column; align-items: center;
+            padding: 18px 5%; gap: 14px;
+            background: rgba(0,0,0,0.95); backdrop-filter: blur(10px);
+            border-bottom: 1px solid transparent; border-image: var(--brand-gradient) 1;
+        }
+        .logo { height: 48px; }
+        .nav-links { display: flex; gap: 10px; align-items: flex-end; }
+        .nav-links figure { display: flex; flex-direction: column; align-items: center; position: relative; padding-bottom: 10px; gap: 6px; }
+        .nav-links figure img { width: 44px; height: 44px; transition: filter 0.35s; filter: brightness(0.6); }
+        .nav-links figcaption { font-size: 0.65rem; font-weight: 900; letter-spacing: 2px; color: transparent; background-image: var(--brand-gradient); background-size: 300% 300%; animation: gradShift 8s ease infinite; -webkit-background-clip: text; background-clip: text; }
+        .nav-links a:hover figure img { filter: brightness(1.2) drop-shadow(0 0 12px var(--teal)); }
+        .nav-links figure::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 0; height: 2px; background: var(--teal); box-shadow: 0 0 8px var(--teal); transition: width 0.3s; }
+        .nav-links a:hover figure::after, .nav-links a.active figure::after { width: 80%; }
+        .nav-links a.active figure img { filter: brightness(1) drop-shadow(0 0 8px var(--teal)); }
+        @media (min-width: 768px) { .navbar { flex-direction: row; justify-content: space-between; } .logo { height: 64px; } .nav-links { gap: 30px; } }
+
+        /* ── ABOUT LAYOUT ── */
+        .about-container {
+            max-width: 1100px; margin: 5rem auto; padding: 0 30px;
+            position: relative; z-index: 5;
+        }
+
+        /* ── PROFILE SECTION ── */
+        .profile-section {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 60px;
+            margin-bottom: 120px;
+            align-items: start;
+        }
+        @media (min-width: 768px) { .profile-section { grid-template-columns: 380px 1fr; } }
+
+        /* ── IMAGE WRAPPER ── */
+        .image-wrapper {
+            position: relative; overflow: hidden;
+            border: 1px solid var(--charcoal);
+            background: #000;
+            aspect-ratio: 3/4;
+            max-width: 380px;
+        }
+
+        .image-wrapper::before, .image-wrapper::after {
+            content: '';
+            position: absolute;
+            width: 24px; height: 24px;
+            border-color: #c60002;
+            border-style: solid;
+            z-index: 10;
+        }
+        .image-wrapper::before { top: 12px; left: 12px; border-width: 2px 0 0 2px; }
+        .image-wrapper::after { bottom: 12px; right: 12px; border-width: 0 2px 2px 0; }
+
+        .profile-img {
+            width: 100%; height: 100%; object-fit: cover;
+            filter: grayscale(100%) contrast(1.05);
+            transition: filter 0.6s ease;
+            display: block;
+        }
+        .image-wrapper:hover .profile-img { filter: grayscale(0%) contrast(1.05); }
+
+        .glitch-layer {
+            position: absolute; inset: 0;
+            background-size: cover; background-position: center;
+            opacity: 0; pointer-events: none; z-index: 5;
+        }
+        .image-wrapper:hover .glitch-layer { opacity: 0.5; animation: glitchAnim 4s infinite linear alternate-reverse; }
+        .crimson-glitch { filter: sepia(100%) hue-rotate(-50deg) saturate(5); left: 3px; }
+        .teal-glitch { filter: sepia(100%) hue-rotate(150deg) saturate(5); left: -3px; }
+
+        /* Scan bar on image hover */
+        .img-scan {
+            position: absolute; inset: 0;
+            background: linear-gradient(to bottom, transparent 40%, rgba(131,219,245,0.07) 50%, transparent 60%);
+            transform: translateY(-100%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 8;
+        }
+        .image-wrapper:hover .img-scan {
+            opacity: 1;
+            animation: imgScan 3s linear infinite;
+        }
+        @keyframes imgScan { to { transform: translateY(200%); } }
+
+        /* ── BIO CONTENT ── */
+        .bio-content { display: flex; flex-direction: column; gap: 0; }
+
+        .section-label {
+            font-size: 0.55rem; font-weight: 900; letter-spacing: 4px;
+            color: var(--charcoal); margin-bottom: 6px;
+        }
+
+        .content-header {
+            border-left: 3px solid #c60002;
+            padding-left: 20px;
+            margin-bottom: 30px;
+        }
+        .content-header h2 { font-size: 1.1rem; font-weight: 900; letter-spacing: 5px; }
+        .id-tag { font-size: 0.55rem; color: var(--charcoal); font-weight: 900; letter-spacing: 2px; display: block; margin-top: 4px; }
+
+        .bio-content p {
+            line-height: 1.9; margin-bottom: 20px;
+            color: var(--mid); font-size: 0.95rem;
+        }
+        .bio-content strong { color: var(--teal); font-weight: 700; }
+
+        /* Stat pills */
+        .stat-row {
+            display: flex; gap: 12px; flex-wrap: wrap;
+            margin-bottom: 36px;
+        }
+        .stat-pill {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            padding: 10px 18px;
+            display: flex; flex-direction: column; align-items: center; gap: 2px;
+        }
+        .stat-num { font-size: 1.2rem; font-weight: 900; color: transparent; background-image: var(--brand-gradient); background-size: 300% 300%; animation: gradShift 8s ease infinite; -webkit-background-clip: text; background-clip: text; }
+        .stat-desc { font-size: 0.5rem; font-weight: 900; letter-spacing: 2px; color: var(--charcoal); }
+
+        .resume-btn {
+            display: inline-flex; align-items: center; gap: 12px;
+            position: relative; overflow: hidden;
+            background: transparent; border: 1px solid rgba(252,47,56,0.4);
+            padding: 18px 32px; cursor: pointer;
+            transition: border-color 0.3s, transform 0.3s;
+        }
+        .resume-btn::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: var(--brand-gradient);
+            transform: translateX(-105%);
+            transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+        }
+        .resume-btn:hover { border-color: rgba(252,47,56,0.8); transform: translateY(-3px); }
+        .resume-btn:hover::before { transform: translateX(0); }
+        .btn-text { font-size: 0.7rem; font-weight: 900; letter-spacing: 3px; color: #fff; position: relative; z-index: 1; }
+        .btn-arrow { color: var(--teal); position: relative; z-index: 1; transition: transform 0.3s; }
+        .resume-btn:hover .btn-arrow { transform: translateX(4px); color: #fff; }
+
+        /* ── SKILLS ── */
+        .skills-section { margin-top: 100px; }
+
+        .skills-header { border-left: 3px solid #c60002; padding-left: 20px; margin-bottom: 50px; }
+        .skills-header h2 { font-size: 1.1rem; font-weight: 900; letter-spacing: 5px; }
+
+        .skills-grid { display: grid; grid-template-columns: 1fr; gap: 28px; }
+        @media (min-width: 600px) { .skills-grid { grid-template-columns: 1fr 1fr; } }
+
+        .skill-item { padding: 24px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+        .skill-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; }
+        .skill-name { font-size: 0.65rem; font-weight: 900; letter-spacing: 3px; color: var(--bone); }
+        .skill-pct { font-size: 0.65rem; font-weight: 900; color: var(--charcoal); }
+
+        .progress-track {
+            width: 100%; height: 2px;
+            background: rgba(255,255,255,0.05);
+            position: relative;
+        }
+        .progress-fill {
+            height: 100%; width: 0%;
+            background: linear-gradient(90deg, var(--teal), rgba(131,219,245,0.4));
+            box-shadow: 0 0 10px var(--teal);
+            transition: width 2s cubic-bezier(0.17, 0.85, 0.43, 1);
+        }
+        .progress-dot {
+            position: absolute; right: calc(100% - 0px); top: 50%;
+            transform: translate(50%, -50%);
+            width: 6px; height: 6px; border-radius: 50%;
+            background: var(--teal);
+            box-shadow: 0 0 8px var(--teal);
+            transition: right 2s cubic-bezier(0.17, 0.85, 0.43, 1);
+        }
+
+        /* ── FOOTER ── */
+        .footer { background: var(--black); padding: 50px 20px; text-align: center; border-top: 1px solid transparent; border-image: var(--brand-gradient) 1; position: relative; z-index: 10; }
+        .footer-brandmark { margin-bottom: 20px; }
+        .footer-brandmark img { height: 36px; opacity: 0.5; filter: brightness(0.6); transition: 0.4s ease; }
+        .footer:hover .footer-brandmark img { opacity: 0.9; filter: brightness(1) drop-shadow(0 0 10px var(--teal)); }
+        .copyright { font-size: 0.65rem; font-weight: 900; letter-spacing: 2px; color: var(--charcoal); margin-bottom: 16px; }
+        .footer-links { display: flex; justify-content: center; gap: 30px; }
+        .footer-links a { font-size: 0.65rem; font-weight: 900; letter-spacing: 2px; color: transparent; background-image: var(--brand-gradient); background-size: 300% 300%; animation: gradShift 9s ease infinite; -webkit-background-clip: text; background-clip: text; }
+
+        /* ── KEYFRAMES ── */
+        @keyframes gradShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        @keyframes glitchAnim {
+            0% { clip-path: inset(80% 0 1% 0); transform: translate(-5px); }
+            20% { clip-path: inset(20% 0 60% 0); transform: translate(5px); }
+            40% { clip-path: inset(50% 0 30% 0); transform: translate(-3px); }
+            60% { clip-path: inset(10% 0 80% 0); transform: translate(5px); }
+            80%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+        }
+
+        /* Reveal animation */
+        .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+    </style>
 </head>
 <body>
+    <div id="cursor"></div>
+    <div id="cursor-ring"></div>
+
     <nav class="navbar">
-        <img src="portfolio/logo/secondary/silverNP.png" alt="Logo" class="logo">
+        <img src="portfolio/logo/secondary/silverNP.png" alt="AJC" class="logo">
         <div class="nav-links">
-            <a href="home.html">
-                <figure>
-                    <img src="portfolio/logo/icons/home/home silver.svg" alt="home">
-                    <figcaption>HOME</figcaption>
-                </figure>
-            </a>
-            <a href="about.html">
-                <figure>
-                    <img src="portfolio/logo/icons/user/user silver.svg" alt="about">
-                    <figcaption>ABOUT ME</figcaption>
-                </figure>
-            </a>
-            <a href="contact.html">
-                <figure>
-                    <img src="portfolio/logo/icons/contact/contact silver.svg" alt="contact">
-                    <figcaption>CONTACT</figcaption>
-                </figure>
-            </a>
+            <a href="index.html"><figure><img src="portfolio/logo/icons/home/home silver.svg" alt="Home"><figcaption>HOME</figcaption></figure></a>
+            <a href="about.html" class="active"><figure><img src="portfolio/logo/icons/user/user silver.svg" alt="About"><figcaption>ABOUT ME</figcaption></figure></a>
+            <a href="contact.html"><figure><img src="portfolio/logo/icons/contact/contact silver.svg" alt="Contact"><figcaption>CONTACT</figcaption></figure></a>
         </div>
     </nav>
 
     <main class="about-container">
-        <section class="profile-section">
+        <section class="profile-section reveal">
+            <!-- Photo -->
             <div class="image-wrapper">
                 <img src="portfolio/photos/me.jpg" alt="Aidan J. Cardenas" class="profile-img">
-                <div class="glitch-layer crimson-glitch" style="background-image: url('portfolio/photos/your-photo.jpg');"></div>
-                <div class="glitch-layer teal-glitch" style="background-image: url('portfolio/photos/your-photo.jpg');"></div>
+                <div class="glitch-layer crimson-glitch" style="background-image: url('portfolio/photos/me.jpg');"></div>
+                <div class="glitch-layer teal-glitch" style="background-image: url('portfolio/photos/me.jpg');"></div>
+                <div class="img-scan"></div>
             </div>
-            
+
+            <!-- Bio -->
             <div class="bio-content">
                 <div class="content-header">
-                    <h2>PERSONNEL PROFILE</h2>
-                    <span class="id-tag">REF: AJC-2026</span>
+                    <p class="section-label">PERSONNEL PROFILE</p>
+                    <h2>AIDAN J.<br>CARDENAS</h2>
+                    <span class="id-tag">REF: AJC-2026 // DEVELOPER & DESIGNER</span>
                 </div>
+
                 <p>
-                    I am a creative developer and designer specialized in **Website Architecture**, 
-                    **Industrial UI Design**, and **Professional Photography**. My work merges 
+                    A creative developer and designer specialized in 
+                    <strong>Website Architecture</strong>, <strong>Industrial UI Design</strong>, 
+                    and <strong>Professional Photography</strong>. Work that merges 
                     technical engineering with high-end visual storytelling.
                 </p>
                 <p>
-                    Whether I am writing clean, responsive code or capturing the sharp details 
-                    of a subject through a lens, I focus on the intersection of art and utility. 
-                    I strive to build digital environments that are as functional as they are visually striking, 
-                    using the <strong>Crimson & Teal</strong> framework to define my signature.
+                    Whether writing clean, responsive code or capturing sharp details 
+                    through a lens — the focus is always the intersection of <strong>art and utility</strong>. 
+                    Building digital environments as functional as they are visually striking.
                 </p>
-                
-                <div class="action-area">
-                    <a href="assets/Aidan_Cardenas_Resume.pdf" download class="resume-btn">
-                        <span class="btn-text">DOWNLOAD RESUME</span>
-                    </a>
+
+                <div class="stat-row">
+                    <div class="stat-pill">
+                        <span class="stat-num">5+</span>
+                        <span class="stat-desc">YEARS EXP</span>
+                    </div>
+                    <div class="stat-pill">
+                        <span class="stat-num">20+</span>
+                        <span class="stat-desc">PROJECTS</span>
+                    </div>
+                    <div class="stat-pill">
+                        <span class="stat-num">3</span>
+                        <span class="stat-desc">DISCIPLINES</span>
+                    </div>
                 </div>
+
+                <a href="assets/Aidan_Cardenas_Resume.pdf" download class="resume-btn">
+                    <span class="btn-text">DOWNLOAD RESUME</span>
+                    <span class="btn-arrow">↓</span>
+                </a>
             </div>
         </section>
 
-        <section class="skills-container">
-            <div class="content-header">
-                <h2>SYSTEM CAPABILITIES</h2>
+        <!-- Skills -->
+        <section class="skills-section reveal">
+            <div class="skills-header">
+                <p class="section-label">SYSTEM_CAPABILITIES</p>
+                <h2>SKILL MATRIX</h2>
             </div>
-            
-            <div class="skills-grid">
-                <div class="skill-item">
-                    <div class="skill-info">
-                        <span>WEB DESIGN & DEV</span>
-                        <span class="percentage">95%</span>
-                    </div>
-                    <div class="progress-line"><span class="fill" data-width="95%"></span></div>
-                </div>
 
+            <div class="skills-grid" id="skillsGrid">
                 <div class="skill-item">
-                    <div class="skill-info">
-                        <span>PHOTOGRAPHY</span>
-                        <span class="percentage">92%</span>
+                    <div class="skill-row">
+                        <span class="skill-name">WEB DESIGN & DEV</span>
+                        <span class="skill-pct">95%</span>
                     </div>
-                    <div class="progress-line"><span class="fill" data-width="92%"></span></div>
+                    <div class="progress-track">
+                        <div class="progress-fill" data-width="95%"></div>
+                        <div class="progress-dot" data-right="5%"></div>
+                    </div>
                 </div>
-
                 <div class="skill-item">
-                    <div class="skill-info">
-                        <span>UI/UX ARCHITECTURE</span>
-                        <span class="percentage">88%</span>
+                    <div class="skill-row">
+                        <span class="skill-name">PHOTOGRAPHY</span>
+                        <span class="skill-pct">92%</span>
                     </div>
-                    <div class="progress-line"><span class="fill" data-width="88%"></span></div>
+                    <div class="progress-track">
+                        <div class="progress-fill" data-width="92%"></div>
+                        <div class="progress-dot" data-right="8%"></div>
+                    </div>
                 </div>
-
                 <div class="skill-item">
-                    <div class="skill-info">
-                        <span>BRANDING</span>
-                        <span class="percentage">85%</span>
+                    <div class="skill-row">
+                        <span class="skill-name">UI/UX ARCHITECTURE</span>
+                        <span class="skill-pct">88%</span>
                     </div>
-                    <div class="progress-line"><span class="fill" data-width="85%"></span></div>
+                    <div class="progress-track">
+                        <div class="progress-fill" data-width="88%"></div>
+                        <div class="progress-dot" data-right="12%"></div>
+                    </div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-row">
+                        <span class="skill-name">BRAND IDENTITY</span>
+                        <span class="skill-pct">85%</span>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill" data-width="85%"></div>
+                        <div class="progress-dot" data-right="15%"></div>
+                    </div>
                 </div>
             </div>
         </section>
     </main>
 
     <footer class="footer">
-        <div class="footer-brandmark">
-            <img src="portfolio/logo/icons/brandmark/silver.png" alt="AJC Brandmark">
-        </div>
-
-        <p>© 2026 Aidan J. Cardenas</p>
-
+        <div class="footer-brandmark"><img src="portfolio/logo/icons/brandmark/silver.png" alt="AJC"></div>
+        <p class="copyright">© 2026 AIDAN J. CARDENAS</p>
         <div class="footer-links">
             <a href="mailto:aidan.j.cardenas@outlook.com">EMAIL</a>
             <a href="https://www.instagram.com/aidanj._cardenas/" target="_blank">INSTAGRAM</a>
@@ -121,20 +373,42 @@
     </footer>
 
     <script>
-        const observerOptions = { threshold: 0.2 };
-        const observer = new IntersectionObserver((entries) => {
+        // Cursor
+        const cursor = document.getElementById('cursor');
+        const ring = document.getElementById('cursor-ring');
+        let rx = 0, ry = 0;
+        document.addEventListener('mousemove', e => {
+            cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px';
+            rx += (e.clientX - rx) * 0.12; ry += (e.clientY - ry) * 0.12;
+        });
+        (function animRing() { ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; requestAnimationFrame(animRing); })();
+
+        // Intersection observer for reveal + skills
+        const io = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const fills = entry.target.querySelectorAll('.fill');
-                    fills.forEach(fill => {
-                        fill.style.width = fill.getAttribute('data-width');
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add('visible');
+                // Animate skill bars if it's the grid
+                if (entry.target.classList.contains('reveal') && entry.target.querySelector('.progress-fill')) {
+                    entry.target.querySelectorAll('.progress-fill').forEach(fill => {
+                        fill.style.width = fill.dataset.width;
                     });
                 }
             });
-        }, observerOptions);
+        }, { threshold: 0.15 });
 
-        // Start observing the skills container
-        observer.observe(document.querySelector('.skills-grid'));
+        document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+        // Trigger skills specifically
+        const skillsGrid = document.getElementById('skillsGrid');
+        const skillObs = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                entries[0].target.querySelectorAll('.progress-fill').forEach(fill => {
+                    fill.style.width = fill.dataset.width;
+                });
+            }
+        }, { threshold: 0.2 });
+        if (skillsGrid) skillObs.observe(skillsGrid);
     </script>
 </body>
 </html>
