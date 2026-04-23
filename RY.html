@@ -1,69 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        /* Deep dark gradient background */
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background: radial-gradient(circle at center, #1e1e2f 0%, #0f0f12 100%);
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        /* The Glassmorphism Audio Box */
-        .audio-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            padding: 40px;
-            border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-            text-align: center;
-            transition: transform 0.3s ease;
-        }
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        background: radial-gradient(circle at center, #1e1e2f 0%, #0f0f12 100%);
+        font-family: 'Segoe UI', Roboto, sans-serif;
+        color: white;
+    }
 
-        .audio-card:hover {
-            transform: translateY(-5px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
+    .container {
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+        align-items: center;
+    }
 
-        /* Styling the audio player itself */
-        audio {
-            width: 320px;
-            height: 45px;
-            filter: invert(90%) hue-rotate(180deg) brightness(1.2); /* Colors the player to match dark mode */
-            outline: none;
-        }
+    .audio-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(12px);
+        padding: 30px;
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        text-align: center;
+        transition: all 0.3s ease;
+        max-width: 400px;
+        width: 100%;
+    }
 
-        /* Optional Title styling inside the box */
-        .audio-card h2 {
-            color: #ffffff;
-            margin-bottom: 20px;
-            font-weight: 300;
-            letter-spacing: 1px;
-            font-size: 1.2rem;
-        }
-    </style>
+    .audio-card:hover {
+        transform: translateY(-6px) scale(1.01);
+        border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    h2 {
+        font-weight: 400;
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+        line-height: 1.4;
+    }
+
+    audio {
+        width: 100%;
+        filter: invert(90%) hue-rotate(180deg) brightness(1.2);
+    }
+
+    iframe {
+        width: 100%;
+        height: 120px;
+        border-radius: 12px;
+        border: none;
+        opacity: 0.9;
+        transition: 0.3s ease;
+    }
+
+    iframe:hover {
+        opacity: 1;
+        transform: scale(1.02);
+    }
+
+</style>
 </head>
+
 <body>
 
+<div class="container">
+
     <div class="audio-card">
-        <h2>The Gospel Of Luke - Pastor Houston | April 15, 2026</h2>
+        <h2>The Gospel Of Luke<br>Pastor Houston | April 15, 2026</h2>
         <audio controls>
             <source src="The Gospel Of Luke - Pastor Houston.m4a" type="audio/mpeg">
-            Your browser does not support the audio element.
         </audio>
     </div>
-    <p style="color: transparent">dh</p>
+
     <div class="audio-card">
-<iframe src="https://1drv.ms/u/c/7521489c371d93eb/IQT-xHwO3xMXSpz_tv9pVeZsAXF_PuhXZju5X5DGTVEH2sw" width="98" height="120" frameborder="0" scrolling="no"></iframe>
+        <h2>The Power of the Holy Spirit<br>Pastor Amilcar | April 22, 2026</h2>
+        <iframe src="https://1drv.ms/u/c/7521489c371d93eb/IQT-xHwO3xMXSpz_tv9pVeZsAXF_PuhXZju5X5DGTVEH2sw"></iframe>
     </div>
+
+</div>
 
 </body>
 </html>
